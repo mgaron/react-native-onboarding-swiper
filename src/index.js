@@ -15,6 +15,7 @@ import tinycolor from 'tinycolor2';
 import Page from './Page';
 import Pagination from './Pagination';
 import Dot from './Dot';
+import BackButton from './buttons/BackButton';
 import SkipButton from './buttons/SkipButton';
 import NextButton from './buttons/NextButton';
 import DoneButton from './buttons/DoneButton';
@@ -54,6 +55,13 @@ class Onboarding extends Component {
         currentPage: viewableItems[0].index,
         backgroundColorAnim: new Animated.Value(0),
       };
+    });
+  };
+
+  goBack = () => {
+    this.flatList.scrollToIndex({
+      animated: true,
+      index: this.state.currentPage - 1,
     });
   };
 
@@ -114,13 +122,16 @@ class Onboarding extends Component {
       bottomBarHeight,
       controlStatusBar,
       showSkip,
+      showBack,
       showNext,
       showDone,
       onSkip,
       onDone,
+      backLabel,
       skipLabel,
       nextLabel,
       allowFontScalingButtons,
+      BackButtonComponent,
       SkipButtonComponent,
       DoneButtonComponent,
       NextButtonComponent,
@@ -192,6 +203,7 @@ class Onboarding extends Component {
             isLight={isLight}
             bottomBarHeight={bottomBarHeight}
             showSkip={showSkip}
+            showBack={showBack}
             showNext={showNext}
             showDone={showDone}
             numPages={pages.length}
@@ -199,10 +211,13 @@ class Onboarding extends Component {
             controlStatusBar={controlStatusBar}
             onSkip={skipFun}
             onDone={onDone}
+            onBack={this.goBack}
             onNext={this.goNext}
+            backLabel={backLabel}
             skipLabel={skipLabel}
             nextLabel={nextLabel}
             allowFontScaling={allowFontScalingButtons}
+            BackButtonComponent={BackButtonComponent}
             SkipButtonComponent={SkipButtonComponent}
             DoneButtonComponent={DoneButtonComponent}
             NextButtonComponent={NextButtonComponent}
@@ -232,12 +247,15 @@ Onboarding.propTypes = {
   bottomBarHeight: PropTypes.number,
   controlStatusBar: PropTypes.bool,
   showSkip: PropTypes.bool,
+  showBack: PropTypes.bool,
   showNext: PropTypes.bool,
   showDone: PropTypes.bool,
   onSkip: PropTypes.func,
   onDone: PropTypes.func,
+  backLabel: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
   skipLabel: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
   nextLabel: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
+  BackButtonComponent: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
   SkipButtonComponent: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
   DoneButtonComponent: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
   NextButtonComponent: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
@@ -258,12 +276,15 @@ Onboarding.defaultProps = {
   bottomBarHeight: 60,
   controlStatusBar: true,
   showSkip: true,
+  showBack: false,
   showNext: true,
   showDone: true,
+  backLabel: 'Back',
   skipLabel: 'Skip',
   nextLabel: 'Next',
   onSkip: null,
   onDone: null,
+  BackButtonComponent: BackButton,
   SkipButtonComponent: SkipButton,
   DoneButtonComponent: DoneButton,
   NextButtonComponent: NextButton,

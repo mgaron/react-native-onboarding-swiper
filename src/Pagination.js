@@ -10,38 +10,61 @@ const Pagination = ({
   isLight,
   bottomBarHeight,
   controlStatusBar,
+  showBack,
   showSkip,
   showNext,
   showDone,
+  onBack,
   onNext,
   onSkip,
   onDone,
+  backLabel,
   skipLabel,
   nextLabel,
   allowFontScaling,
+  BackButtonComponent,
   SkipButtonComponent,
   NextButtonComponent,
   DoneButtonComponent,
   DotComponent,
+  skipIsPageSpecific,
 }) => {
+  const isFirstPage = currentPage === 0;
   const isLastPage = currentPage + 1 === numPages;
 
   const SkipButtonFinal = showSkip &&
-    !isLastPage && (
+    isFirstPage && (
       <SkipButtonComponent
         isLight={isLight}
         skipLabel={skipLabel}
-		allowFontScaling={allowFontScaling}
+		    allowFontScaling={allowFontScaling}
         onPress={() => {
           if (typeof onSkip === 'function') {
             if (controlStatusBar) {
               StatusBar.setBarStyle('default', true);
             }
-            onSkip();
+            onSkip(skipIsPageSpecific ? currentPage : undefined);
           }
         }}
       />
     );
+
+  const BackButtonFinal = showBack &&
+      !isFirstPage && (
+        <BackButtonComponent
+          isLight={isLight}
+          backLabel={backLabel}
+          allowFontScaling={allowFontScaling}
+          onPress={() => {
+            if (typeof onBack === 'function') {
+              if (controlStatusBar) {
+                StatusBar.setBarStyle('default', true);
+              }
+              onBack();
+            }
+          }}
+        />
+      );
 
   const NextButtonFinal = showNext &&
     !isLastPage && (
@@ -76,7 +99,10 @@ const Pagination = ({
         ...styles.container,
       }}
     >
-      <View style={styles.buttonLeft}>{SkipButtonFinal}</View>
+      <View style={styles.buttonLeft}>
+        {SkipButtonFinal}
+        {BackButtonFinal}
+      </View>
       <Dots
         isLight={isLight}
         numPages={numPages}
@@ -100,10 +126,13 @@ Pagination.propTypes = {
   showNext: PropTypes.bool.isRequired,
   showSkip: PropTypes.bool.isRequired,
   showDone: PropTypes.bool.isRequired,
+  onBack: PropTypes.func,
   onNext: PropTypes.func.isRequired,
   onSkip: PropTypes.func,
   onDone: PropTypes.func,
   allowFontScaling: PropTypes.bool,
+  backLabel: PropTypes.oneOfType([PropTypes.element, PropTypes.string])
+    .isRequired,  
   skipLabel: PropTypes.oneOfType([PropTypes.element, PropTypes.string])
     .isRequired,
   nextLabel: PropTypes.oneOfType([PropTypes.element, PropTypes.string])
