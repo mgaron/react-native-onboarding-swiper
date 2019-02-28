@@ -184,7 +184,7 @@ class Onboarding extends Component {
           ref={list => {
             this.flatList = list;
           }}
-          data={pages}
+          data={pages.filter(p => p !== false)}
           pagingEnabled
           horizontal
           showsHorizontalScrollIndicator={false}
