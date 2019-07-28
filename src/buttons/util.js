@@ -1,6 +1,6 @@
 const BUTTON_SIZE = 40;
-const MARGIN_RIGHT = 10;
-const MARGIN_LEFT = 10;
+const MARGIN_RIGHT = 48;
+const MARGIN_LEFT = 48;
 
 const getDefaultStyle = isLight => ({
   color: isLight ? 'rgba(0, 0, 0, 0.8)' : '#fff',
